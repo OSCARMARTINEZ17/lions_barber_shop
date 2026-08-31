@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lions Barber Shop | Ibagué - Reservas & Barbería Premium</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpg" href="multimedia/logo.jpg" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- SheetJS (Generador de Excel .xlsx para Contabilidad) -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- Canvas Confetti (Efecto visual de confirmación) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Hoja de Estilos -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- ==================== HEADER & NAVEGACIÓN ==================== -->
+    <header class="main-header" id="header">
+      <div class="container nav-container">
+        <a href="#hero" class="brand-logo">
+          <img
+            src="multimedia/logo.jpg"
+            onerror="this.src = 'logo.png'"
+            alt="Lions Barber Shop Logo"
+            class="nav-logo-img"
+          />
+          <div class="brand-text">
+            <span class="brand-name">LIONS</span>
+            <span class="brand-sub">BARBER SHOP • IBAGUÉ</span>
+          </div>
+        </a>
+
+        <nav class="nav-menu" id="nav-menu">
+          <ul class="nav-list">
+            <li><a href="#hero" class="nav-link active">Inicio</a></li>
+            <li><a href="#servicios" class="nav-link">Servicios</a></li>
+            <li><a href="#barberos" class="nav-link">Barberos</a></li>
+            <li><a href="#sedes" class="nav-link">Sedes Ibagué</a></li>
+            <li><a href="#nosotros" class="nav-link">Experiencia</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="btn btn-gold btn-sm" onclick="app.openBookingModal()">
+            <i class="fa-solid fa-calendar-check"></i> Agendar Cita
+          </button>
+          <button
+            class="btn-admin-access"
+            onclick="app.openAdminModal()"
+            title="Panel de Administración y Contabilidad"
+          >
+            <i class="fa-solid fa-shield-halved"></i>
+            <span class="admin-label">Admin & Finanzas</span>
+          </button>
+          <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ==================== HERO / PORTADA ==================== -->
+    <section class="hero-section" id="hero">
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <div class="hero-badge">
+          <i class="fa-solid fa-crown text-gold"></i> • ELEGANCIA • ESTILO •
+          CALIDAD • IBAGUÉ
+        </div>
+
+        <div class="hero-logo-center">
+          <img
+            src="multimedia/logo.jpg"
+            onerror="this.src = 'logo.jpg'"
+            alt="Lions Barber Shop Ibagué"
+            class="hero-emblem-img"
+          />
+        </div>
+
+        <h1 class="hero-title">
+          CORTES MODERNOS & <span class="gold-gradient">CLÁSICOS</span>
+        </h1>
+        <p class="hero-desc">
+          👑 <strong>Imagen, clase y precisión.</strong> Vive la experiencia
+          definitiva de barbería en Ibagué. Agenda tu cita en nuestra Sede
+          Principal o en la 2da Sede con nuestro CEO Yeico Quintero.
+        </p>
+
+        <div class="hero-buttons">
+          <button
+            class="btn btn-gold btn-lg pulse-btn"
+            onclick="app.openBookingModal()"
+          >
+            <i class="fa-solid fa-scissors"></i> Reservar Mi Cita Ahora
+          </button>
+          <a
+            href="https://api.whatsapp.com/message/2GRNX7WWAKYKN1?autoload=1&app_absent=0&utm_source=ig"
+            target="_blank"
+            class="btn btn-outline btn-lg"
+          >
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp Directo
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-number">2 SEDES</span>
+            <span class="stat-label">Ibagué, Tolima</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">4.9 ★</span>
+            <span class="stat-label">Calificación de Clientes</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Atención & Estilo VIP</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECCIÓN SERVICIOS ==================== -->
+    <section class="services-section section-padding" id="servicios">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">CATÁLOGO EXCLUSIVO</span>
+          <h2 class="section-title">
+            Nuestros <span class="gold-text">Servicios & Tarifas</span>
+          </h2>
+          <div class="section-divider">
+            <span></span><i class="fa-solid fa-scissors"></i><span></span>
+          </div>
+          <p class="section-subtitle">
+            Cortes a tijera y máquina, perfilado de barba con toalla caliente,
+            mascarillas y colorimetría profesional.
+          </p>
+        </div>
+
+        <div class="services-grid" id="services-grid">
+          <!-- Renderizado dinámico desde script.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECCIÓN BARBEROS ==================== -->
+    <section class="barbers-section section-padding" id="barberos">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">MAESTROS DE LA NAVAJA</span>
+          <h2 class="section-title">
+            Nuestro <span class="gold-text">Equipo de Barberos</span>
+          </h2>
+          <div class="section-divider">
+            <span></span><i class="fa-solid fa-crown"></i><span></span>
+          </div>
+          <p class="section-subtitle">
+            3 Maestros barberos en la Sede Principal y nuestro CEO Yeico
+            Quintero en la 2da Sede.
+          </p>
+        </div>
+
+        <div class="barbers-grid" id="barbers-grid">
+          <!-- Renderizado dinámico desde script.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECCIÓN SEDES ==================== -->
+    <section class="locations-section section-padding" id="sedes">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">UBICACIONES EN IBAGUÉ</span>
+          <h2 class="section-title">
+            Nuestras <span class="gold-text">Sedes</span>
+          </h2>
+          <div class="section-divider">
+            <span></span><i class="fa-solid fa-location-dot"></i><span></span>
+          </div>
+          <p class="section-subtitle">
+            Visítanos en nuestras 2 cómodas sedes equipadas con la mejor
+            atención.
+          </p>
+        </div>
+
+        <div class="locations-grid" id="locations-grid">
+          <!-- Renderizado dinámico desde script.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECCIÓN EXPERIENCIA / CEO ==================== -->
+    <section class="experience-section section-padding" id="nosotros">
+      <div class="container">
+        <div class="experience-box">
+          <div class="exp-content">
+            <span class="section-tag">LIONS EXPERIENCE • IBAGUÉ</span>
+            <h2 class="exp-title">
+              El Arte del Buen Gusto por
+              <span class="gold-text">Yeico Quintero</span>
+            </h2>
+            <p class="exp-text">
+              Bajo la dirección de su CEO y Fundador
+              <strong>Yeico Quintero</strong>, en
+              <strong>Lions Barber Shop</strong> hemos elevado el estándar del
+              cuidado masculino en Ibagué. No solo cortamos cabello, diseñamos
+              la imagen de impacto que define a un verdadero caballero.
+            </p>
+            <div class="exp-features">
+              <div class="exp-item">
+                <i class="fa-brands fa-instagram exp-icon"></i>
+                <div>
+                  <h4>Instagram del CEO</h4>
+                  <p>
+                    <a
+                      href="https://www.instagram.com/yeico_quintero/"
+                      target="_blank"
+                      class="text-gold"
+                      >@yeico_quintero</a
+                    >
+                    • Conoce sus trabajos y técnicas exclusivas.
+                  </p>
+                </div>
+              </div>
+              <div class="exp-item">
+                <i class="fa-solid fa-spa exp-icon"></i>
+                <div>
+                  <h4>Ritual de Toalla Caliente & Navaja</h4>
+                  <p>
+                    Apertura de poros, aceites esenciales y máxima relajación
+                    facial.
+                  </p>
+                </div>
+              </div>
+              <div class="exp-item">
+                <i class="fa-solid fa-medal exp-icon"></i>
+                <div>
+                  <h4>Garantía de Estilo & Precisión</h4>
+                  <p>
+                    Técnicas modernas en degradados, fade, freestyle y cortes
+                    clásicos.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-gold mt-4" onclick="app.openBookingModal()">
+              <i class="fa-solid fa-calendar-plus"></i> Agendar Mi Cita Ahora
+            </button>
+          </div>
+          <div class="exp-image-wrap">
+            <div class="exp-card-overlay">
+              <img
+                src="multimedia/logo.jpg"
+                onerror="this.src = 'logo.jpg'"
+                alt="Lions Barber Shop"
+                class="exp-logo-decor"
+              />
+              <div class="exp-badge-award">
+                <i class="fa-solid fa-crown text-gold"></i>
+                <div>
+                  <strong>Lions Barber Shop</strong>
+                  <small>Ibagué, Tolima - Colombia</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== BANNER CTA ==================== -->
+    <section class="cta-banner">
+      <div class="container text-center">
+        <h2 class="cta-title">¿Listo para lucir impecable?</h2>
+        <p class="cta-subtitle">
+          Reserva online en menos de 1 minuto y recibe confirmación instantánea
+          por WhatsApp.
+        </p>
+        <button
+          class="btn btn-gold btn-lg shadow-gold"
+          onclick="app.openBookingModal()"
+        >
+          <i class="fa-brands fa-whatsapp"></i> Agendar Cita en Lions Barber
+          Shop
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="main-footer">
+      <div class="container footer-grid">
+        <div class="footer-col brand-col">
+          <div class="brand-logo footer-logo">
+            <img
+              src="multimedia/logo.jpg"
+              onerror="this.src = 'logo.jpg'"
+              alt="Lions Barber Shop"
+              class="nav-logo-img"
+            />
+            <div class="brand-text">
+              <span class="brand-name">LIONS</span>
+              <span class="brand-sub">BARBER SHOP • IBAGUÉ</span>
+            </div>
+          </div>
+          <p class="footer-desc">
+            ✂️ Cortes modernos & clásicos • 👑 Imagen, clase y precisión • 🔥
+            Elegancia, Estilo y Calidad en Ibagué.
+          </p>
+          <div class="social-links">
+            <a
+              href="https://www.instagram.com/lionsbarbershop___/"
+              target="_blank"
+              aria-label="Instagram Barbería"
+              title="Instagram Barbería"
+              ><i class="fa-brands fa-instagram"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/yeico_quintero/"
+              target="_blank"
+              aria-label="Instagram CEO"
+              title="Instagram CEO Yeico Quintero"
+              ><i class="fa-solid fa-user-tie"></i
+            ></a>
+            <a
+              href="https://www.facebook.com/yeicobarbershop/"
+              target="_blank"
+              aria-label="Facebook Barbería"
+              title="Facebook"
+              ><i class="fa-brands fa-facebook-f"></i
+            ></a>
+            <a
+              href="https://api.whatsapp.com/message/2GRNX7WWAKYKN1?autoload=1&app_absent=0&utm_source=ig"
+              target="_blank"
+              aria-label="WhatsApp"
+              title="WhatsApp Oficial"
+              ><i class="fa-brands fa-whatsapp"></i
+            ></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-title">Nuestras Sedes</h4>
+          <ul class="footer-links">
+            <li>
+              <i class="fa-solid fa-location-dot text-gold"></i>
+              <strong>Principal:</strong> Cl. 11 #12-38, Ibagué
+            </li>
+            <li>
+              <i class="fa-solid fa-location-dot text-gold"></i>
+              <strong>2da Sede:</strong> Cra. 13 A #5-13, Ibagué
+            </li>
+            <li>
+              <a
+                href="https://maps.app.goo.gl/zGFsDWxk14tmvYZAA"
+                target="_blank"
+                class="text-gold"
+                ><i class="fa-solid fa-map-location-dot"></i> Ver en Google
+                Maps</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-title">Horario de Atención</h4>
+          <ul class="footer-hours">
+            <li><span>Lunes a Sábado:</span> <span>9:00 AM - 8:30 PM</span></li>
+            <li>
+              <span>Domingos & Festivos:</span> <span>10:00 AM - 6:00 PM</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-title">Redes & Contacto</h4>
+          <p>
+            <a
+              href="https://www.instagram.com/lionsbarbershop___/"
+              target="_blank"
+              class="text-gold"
+              ><i class="fa-brands fa-instagram"></i> @lionsbarbershop___</a
+            >
+          </p>
+          <p>
+            <a
+              href="https://www.instagram.com/yeico_quintero/"
+              target="_blank"
+              class="text-gold"
+              ><i class="fa-solid fa-crown"></i> @yeico_quintero (CEO)</a
+            >
+          </p>
+          <p>
+            <a href="https://www.facebook.com/yeicobarbershop/" target="_blank"
+              ><i class="fa-brands fa-facebook"></i> Yeico Barber Shop</a
+            >
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom text-center">
+        <p>
+          &copy; 2026 <strong>Lions Barber Shop</strong> • Ibagué, Tolima -
+          Colombia. Todos los derechos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <!-- ==================== BOTÓN FLOTANTE DE WHATSAPP ==================== -->
+    <a
+      href="https://api.whatsapp.com/message/2GRNX7WWAKYKN1?autoload=1&app_absent=0&utm_source=ig"
+      target="_blank"
+      class="whatsapp-float"
+      title="Contactar por WhatsApp"
+    >
+      <i class="fa-brands fa-whatsapp"></i>
+      <span class="float-tooltip">¡Escríbenos por WhatsApp!</span>
+    </a>
+
+    <!-- ==================== MODAL 1: FORMULARIO DE AGENDAMIENTO ==================== -->
+    <div class="modal-backdrop" id="booking-modal" aria-hidden="true">
+      <div class="modal-box booking-modal-box">
+        <button class="modal-close" onclick="app.closeBookingModal()">
+          &times;
+        </button>
+
+        <div class="modal-header">
+          <div class="modal-icon-badge">
+            <i class="fa-solid fa-calendar-check text-gold"></i>
+          </div>
+          <div>
+            <h3 class="modal-title">Agendar Tu Cita</h3>
+            <p class="modal-subtitle">
+              Lions Barber Shop Ibagué • Confirmación automática por WhatsApp
+            </p>
+          </div>
+        </div>
+
+        <form id="booking-form" onsubmit="app.handleBookingSubmit(event)">
+          <!-- Paso 1: Sede -->
+          <div class="form-section">
+            <label class="form-section-title"
+              ><i class="fa-solid fa-location-dot text-gold"></i> 1. Selecciona
+              la Sede en Ibagué</label
+            >
+            <div class="select-grid" id="branches-selection"></div>
+          </div>
+
+          <!-- Paso 2: Barbero -->
+          <div class="form-section">
+            <label class="form-section-title"
+              ><i class="fa-solid fa-scissors text-gold"></i> 2. Elige tu
+              Barbero</label
+            >
+            <div class="select-grid" id="barbers-selection"></div>
+          </div>
+
+          <!-- Paso 3: Servicio -->
+          <div class="form-section">
+            <label class="form-section-title"
+              ><i class="fa-solid fa-crown text-gold"></i> 3. Selecciona el
+              Servicio</label
+            >
+            <div
+              class="select-grid services-select-grid"
+              id="services-selection"
+            ></div>
+          </div>
+
+          <!-- Paso 4: Fecha & Hora -->
+          <div class="form-section">
+            <label class="form-section-title"
+              ><i class="fa-solid fa-clock text-gold"></i> 4. Fecha y
+              Horario</label
+            >
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="booking-date">Fecha:</label>
+                <input
+                  type="date"
+                  id="booking-date"
+                  class="form-input"
+                  required
+                  onchange="app.onDateSelected()"
+                />
+              </div>
+              <div class="form-group">
+                <label for="booking-time">Hora Disponible:</label>
+                <select id="booking-time" class="form-input" required>
+                  <option value="">Selecciona una fecha primero</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 5: Datos del Cliente -->
+          <div class="form-section">
+            <label class="form-section-title"
+              ><i class="fa-solid fa-user text-gold"></i> 5. Tus Datos de
+              Contacto</label
+            >
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="client-name">Nombre y Apellido:</label>
+                <input
+                  type="text"
+                  id="client-name"
+                  class="form-input"
+                  placeholder="Ej. Juan Pérez"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="client-phone">Número de WhatsApp:</label>
+                <input
+                  type="tel"
+                  id="client-phone"
+                  class="form-input"
+                  placeholder="Ej. 3101234567"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="booking-notes"
+                >Notas o preferencias de corte (opcional):</label
+              >
+              <input
+                type="text"
+                id="booking-notes"
+                class="form-input"
+                placeholder="Ej. Fade medio en punta, diseño de cejas o barba..."
+              />
+            </div>
+          </div>
+
+          <!-- Resumen de Costo & Acción -->
+          <div class="booking-summary-card">
+            <div class="summary-details">
+              <div class="summary-line">
+                <span>Servicio Seleccionado:</span>
+                <strong id="summary-service-name"
+                  >Selecciona un servicio</strong
+                >
+              </div>
+              <div class="summary-line">
+                <span>Sede & Barbero:</span>
+                <strong id="summary-location-barber">- / -</strong>
+              </div>
+              <div class="summary-line total-line">
+                <span>Total a Pagar en Sede:</span>
+                <span class="summary-price" id="summary-total-price">$0</span>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-gold btn-block btn-lg"
+              id="btn-submit-booking"
+            >
+              <i class="fa-brands fa-whatsapp"></i> Confirmar Cita & Enviar a
+              WhatsApp
+            </button>
+            <p class="summary-note">
+              <i class="fa-solid fa-lock"></i> Se guardará el registro para
+              contabilidad y se enviará la orden estructurada al WhatsApp de
+              Lions Barber Shop.
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== MODAL 2: CONFIRMACIÓN EXITOSA ==================== -->
+    <div class="modal-backdrop" id="success-modal" aria-hidden="true">
+      <div class="modal-box success-modal-box text-center">
+        <div class="success-icon-wrap">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <h3 class="modal-title text-gold">¡Cita Agendada con Éxito!</h3>
+        <p class="success-subtitle">
+          Hemos registrado tu reserva en
+          <strong>Lions Barber Shop Ibagué</strong>.
+        </p>
+
+        <div class="ticket-card" id="ticket-card-content"></div>
+
+        <div class="success-actions">
+          <a
+            id="btn-open-whatsapp-direct"
+            href="#"
+            target="_blank"
+            class="btn btn-gold btn-block btn-lg"
+          >
+            <i class="fa-brands fa-whatsapp"></i> Abrir Chat de WhatsApp
+          </a>
+          <button
+            class="btn btn-outline btn-block mt-2"
+            onclick="app.closeSuccessModal()"
+          >
+            Cerrar y Volver al Inicio
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== MODAL 3: PANEL ADMIN & CONTABILIDAD ==================== -->
+    <div class="modal-backdrop" id="admin-modal" aria-hidden="true">
+      <div class="modal-box admin-modal-box">
+        <div class="admin-header">
+          <div class="admin-header-left">
+            <img
+              src="multimedia/logo.jpg"
+              onerror="this.src = 'logo.png'"
+              class="admin-logo-small"
+              alt="Logo"
+            />
+            <div>
+              <h3 class="admin-title">Panel de Control & Contabilidad</h3>
+              <p class="admin-subtitle">
+                Lions Barber Shop Ibagué • Citas, Liquidación de Barberos y
+                Finanzas
+              </p>
+            </div>
+          </div>
+          <div class="admin-header-actions">
+            <button class="btn btn-gold btn-sm" onclick="app.exportToExcel()">
+              <i class="fa-solid fa-file-excel"></i> Descargar Excel (.xlsx)
+            </button>
+            <button class="modal-close-static" onclick="app.closeAdminModal()">
+              &times;
+            </button>
+          </div>
+        </div>
+
+        <!-- Métricas KPIs Contables -->
+        <div class="finance-kpis-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon gold-bg">
+              <i class="fa-solid fa-coins"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-title">Ingresos Totales (Pagados)</span>
+              <h3 class="kpi-value" id="kpi-total-revenue">$0</h3>
+              <small class="kpi-sub" id="kpi-revenue-count"
+                >0 cortes pagados</small
+              >
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon blue-bg">
+              <i class="fa-solid fa-hand-holding-dollar"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-title">Comisiones de Barberos</span>
+              <h3 class="kpi-value" id="kpi-barbers-payout">$0</h3>
+              <small class="kpi-sub" id="kpi-barber-share-rate"
+                >Porcentaje: 50% configurado</small
+              >
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon green-bg">
+              <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-title">Ganancia Neta Barbería</span>
+              <h3 class="kpi-value" id="kpi-shop-profit">$0</h3>
+              <small class="kpi-sub">Margen neto operativo</small>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon purple-bg">
+              <i class="fa-solid fa-calendar-days"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-title">Total de Citas</span>
+              <h3 class="kpi-value" id="kpi-total-appointments">0</h3>
+              <small class="kpi-sub" id="kpi-status-breakdown"
+                >0 Pendientes | 0 Pagadas</small
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Pestañas Admin -->
+        <div class="admin-tabs">
+          <button
+            class="admin-tab active"
+            onclick="app.switchAdminTab('citas')"
+          >
+            <i class="fa-solid fa-list-check"></i> Registro de Citas & Cobros
+          </button>
+          <button
+            class="admin-tab"
+            onclick="app.switchAdminTab('barberos-stats')"
+          >
+            <i class="fa-solid fa-users-gear"></i> Liquidación por Barbero
+          </button>
+          <button class="admin-tab" onclick="app.switchAdminTab('sedes-stats')">
+            <i class="fa-solid fa-shop"></i> Rendimiento por Sede
+          </button>
+          <button class="admin-tab" onclick="app.switchAdminTab('config')">
+            <i class="fa-solid fa-sliders"></i> Ajustes de Comisiones
+          </button>
+        </div>
+
+        <!-- Tab 1: Citas -->
+        <div class="admin-tab-content active" id="tab-citas">
+          <div class="admin-toolbar">
+            <div class="toolbar-search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                id="admin-search-input"
+                placeholder="Buscar cliente, teléfono, barbero o ID..."
+                onkeyup="app.renderAdminAppointmentsTable()"
+              />
+            </div>
+
+            <div class="toolbar-filters">
+              <select
+                id="filter-status"
+                onchange="app.renderAdminAppointmentsTable()"
+              >
+                <option value="all">Todos los Estados</option>
+                <option value="Pendiente">Solo Pendientes</option>
+                <option value="Completado / Pagado">Solo Pagados</option>
+                <option value="Cancelado">Solo Cancelados</option>
+              </select>
+
+              <select
+                id="filter-branch"
+                onchange="app.renderAdminAppointmentsTable()"
+              >
+                <option value="all">Todas las Sedes</option>
+              </select>
+
+              <select
+                id="filter-timeframe"
+                onchange="app.renderAdminAppointmentsTable()"
+              >
+                <option value="all">Historial Completo</option>
+                <option value="today">Hoy</option>
+                <option value="month">Este Mes</option>
+              </select>
+
+              <button
+                class="btn btn-outline btn-sm"
+                onclick="app.openManualAppointmentModal()"
+              >
+                <i class="fa-solid fa-plus"></i> Registrar Venta Directa en
+                Local
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha & Hora</th>
+                  <th>Cliente</th>
+                  <th>Teléfono</th>
+                  <th>Sede</th>
+                  <th>Barbero</th>
+                  <th>Servicio</th>
+                  <th>Precio</th>
+                  <th>Método Pago</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="admin-appointments-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 2: Barberos -->
+        <div class="admin-tab-content" id="tab-barberos-stats">
+          <div
+            class="barbers-accounting-grid"
+            id="barbers-accounting-container"
+          ></div>
+        </div>
+
+        <!-- Tab 3: Sedes -->
+        <div class="admin-tab-content" id="tab-sedes-stats">
+          <div
+            class="branches-accounting-grid"
+            id="branches-accounting-container"
+          ></div>
+        </div>
+
+        <!-- Tab 4: Configuración -->
+        <div class="admin-tab-content" id="tab-config">
+          <div class="config-card">
+            <h4 class="config-title">
+              <i class="fa-solid fa-percent text-gold"></i> Configuración de
+              Comisiones
+            </h4>
+            <p class="config-desc">
+              Define el porcentaje de comisión predeterminado que recibe el
+              barbero sobre cada servicio completado.
+            </p>
+
+            <div class="form-row-2 mt-3">
+              <div class="form-group">
+                <label for="config-barber-percent"
+                  >Comisión para el Barbero (%):</label
+                >
+                <input
+                  type="number"
+                  id="config-barber-percent"
+                  class="form-input"
+                  min="0"
+                  max="100"
+                  value="50"
+                  onchange="app.updateCommissionRate()"
+                />
+              </div>
+              <div class="form-group">
+                <label>Porcentaje Barbería Lions (%):</label>
+                <input
+                  type="text"
+                  id="config-shop-percent"
+                  class="form-input"
+                  value="50%"
+                  readonly
+                  disabled
+                />
+              </div>
+            </div>
+
+            <div class="alert-box-info mt-3">
+              <i class="fa-solid fa-circle-info text-gold"></i>
+              <span
+                >Los cambios se aplican automáticamente a los cálculos contables
+                y a las exportaciones en Excel.</span
+              >
+            </div>
+
+            <div class="config-actions mt-4">
+              <button
+                class="btn btn-danger btn-sm"
+                onclick="app.resetSampleData()"
+              >
+                <i class="fa-solid fa-rotate-left"></i> Restaurar Datos de
+                Ejemplo
+              </button>
+              <button
+                class="btn btn-outline btn-sm"
+                onclick="app.clearAllData()"
+              >
+                <i class="fa-solid fa-trash"></i> Vaciar Todas las Citas
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== MODAL 4: VENTA MANUAL EN LOCAL ==================== -->
+    <div class="modal-backdrop" id="manual-modal" aria-hidden="true">
+      <div class="modal-box manual-modal-box">
+        <button class="modal-close" onclick="app.closeManualModal()">
+          &times;
+        </button>
+        <div class="modal-header">
+          <div class="modal-icon-badge">
+            <i class="fa-solid fa-cash-register text-gold"></i>
+          </div>
+          <div>
+            <h3 class="modal-title">Registrar Venta Directa en Local</h3>
+            <p class="modal-subtitle">
+              Para clientes que llegan sin cita web previa
+            </p>
+          </div>
+        </div>
+        <form onsubmit="app.handleManualSaleSubmit(event)">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="manual-client">Nombre del Cliente:</label>
+              <input
+                type="text"
+                id="manual-client"
+                class="form-input"
+                placeholder="Cliente mostrador"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="manual-phone">Teléfono / WhatsApp:</label>
+              <input
+                type="tel"
+                id="manual-phone"
+                class="form-input"
+                placeholder="3100000000"
+              />
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="manual-branch">Sede:</label>
+              <select
+                id="manual-branch"
+                class="form-input"
+                required
+                onchange="app.updateManualBarbers()"
+              ></select>
+            </div>
+            <div class="form-group">
+              <label for="manual-barber">Barbero:</label>
+              <select id="manual-barber" class="form-input" required></select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="manual-service">Servicio:</label>
+              <select
+                id="manual-service"
+                class="form-input"
+                required
+                onchange="app.updateManualServicePrice()"
+              ></select>
+            </div>
+            <div class="form-group">
+              <label for="manual-price">Precio Cobrado ($):</label>
+              <input
+                type="number"
+                id="manual-price"
+                class="form-input"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="manual-payment-method">Método de Pago:</label>
+              <select id="manual-payment-method" class="form-input" required>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia / Nequi / Daviplata">
+                  Transferencia / Nequi / Daviplata
+                </option>
+                <option value="Tarjeta Débito/Crédito">
+                  Tarjeta Débito/Crédito
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="manual-status">Estado del Pago:</label>
+              <select id="manual-status" class="form-input" required>
+                <option value="Completado / Pagado">
+                  Completado & Pagado (Sumar a Contabilidad)
+                </option>
+                <option value="Pendiente">Pendiente de Cobro</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-gold btn-block btn-lg mt-3">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar Venta en
+            Contabilidad
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Script JS Principal -->
+    <script src="script.js"></script>
+  </body>
+</html>

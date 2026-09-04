@@ -587,23 +587,38 @@ class LionsBarberShopApp {
     this.appointments.unshift(newAppointment);
     this.saveAppointments();
 
-    const whatsappMsg = `💈 *NUEVA RESERVA - LIONS BARBER SHOP IBAGUÉ* 💈
+    const E = {
+      barber: "\u{1F488}",
+      pin: "\u{1F4CC}",
+      person: "\u{1F464}",
+      phone: "\u{1F4F1}",
+      building: "\u{1F3E2}",
+      location: "\u{1F4CD}",
+      scissors: "\u2702\uFE0F",
+      bell: "\u{1F6CE}\uFE0F",
+      money: "\u{1F4B0}",
+      calendar: "\u{1F4C5}",
+      clock: "\u23F0",
+      note: "\u{1F4DD}",
+    };
+
+    const whatsappMsg = `${E.barber} *NUEVA RESERVA - LIONS BARBER SHOP IBAGUÉ* ${E.barber}
 ━━━━━━━━━━━━━━━━━━━━
-📌 *Código de Cita:* #${newAppointment.id}
-👤 *Cliente:* ${clientName}
-📱 *Teléfono:* ${clientPhone}
-🏢 *Sede:* ${branch.name}
-📍 *Dirección:* ${branch.address}
-✂️ *Barbero:* ${barber.name}
-🛎️ *Servicio:* ${service.name}
-💰 *Valor:* ${this.formatMoney(service.price)}
-📅 *Fecha:* ${dateVal}
-⏰ *Hora:* ${timeVal}
-📝 *Notas:* ${notes || "Sin observaciones"}
+${E.pin} *Código de Cita:* #${newAppointment.id}
+${E.person} *Cliente:* ${clientName}
+${E.phone} *Teléfono:* ${clientPhone}
+${E.building} *Sede:* ${branch.name}
+${E.location} *Dirección:* ${branch.address}
+${E.scissors} *Barbero:* ${barber.name}
+${E.bell} *Servicio:* ${service.name}
+${E.money} *Valor:* ${this.formatMoney(service.price)}
+${E.calendar} *Fecha:* ${dateVal}
+${E.clock} *Hora:* ${timeVal}
+${E.note} *Notas:* ${notes || "Sin observaciones"}
 ━━━━━━━━━━━━━━━━━━━━
 _Por favor confírmame disponibilidad para quedar agendado. ¡Muchas gracias!_`;
 
-    const whatsappUrl = `https://api.whatsapp.com/message/2GRNX7WWAKYKN1?text=${encodeURIComponent(whatsappMsg)}`;
+    const whatsappUrl = `https://wa.me/573167075129?text=${encodeURIComponent(whatsappMsg)}`;
 
     this.closeBookingModal();
 

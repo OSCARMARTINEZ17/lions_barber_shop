@@ -55,6 +55,14 @@ class LionsBarberPortal {
     this.checkSession();
   }
 
+  // ==================== FORMATEO DE TELÉFONO PARA WHATSAPP ====================
+  toWhatsAppNumber(phone) {
+    let clean = (phone || "").replace(/[^0-9]/g, "");
+    // Si son 10 dígitos (número colombiano sin indicativo), se le antepone 57
+    if (clean.length === 10) clean = "57" + clean;
+    return clean;
+  }
+
   // ==================== GENERADOR DE HASH SHA-256 ====================
   async sha256(message) {
     const msgBuffer = new TextEncoder().encode(message);
@@ -282,7 +290,7 @@ class LionsBarberPortal {
         const clientMsg = encodeURIComponent(
           `💈 ¡Hola ${a.clientName}! Te saluda ${this.currentBarber.name.split(" ")[0]} de Lions Barber Shop.\nTu cita para *${a.serviceName}* está programada a las *${a.time}*.\n¡Ya tengo todo listo para tu turno!`,
         );
-        const cleanPhone = (a.clientPhone || "").replace(/[^0-9]/g, "");
+        const cleanPhone = this.toWhatsAppNumber(a.clientPhone);
 
         return `
         <tr>

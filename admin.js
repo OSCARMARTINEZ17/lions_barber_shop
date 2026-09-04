@@ -113,6 +113,13 @@ class LionsAdminApp {
     return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
   }
 
+  toWhatsAppNumber(phone) {
+    let clean = (phone || "").replace(/[^0-9]/g, "");
+    // Si son 10 dígitos (número colombiano sin indicativo), se le antepone 57
+    if (clean.length === 10) clean = "57" + clean;
+    return clean;
+  }
+
   getSavedPinHash() {
     return localStorage.getItem(this.pinHashKey) || this.defaultPinHash;
   }
@@ -415,7 +422,7 @@ class LionsAdminApp {
           <td>${a.date}<br><small class="card-desc">${a.time}</small></td>
           <td><strong>${a.clientName}</strong></td>
           <td>
-            <a href="https://wa.me/${(a.clientPhone || "").replace(/[^0-9]/g, "")}" target="_blank" class="text-gold">
+            <a href="https://wa.me/${this.toWhatsAppNumber(a.clientPhone)}" target="_blank" class="text-gold">
               <i class="fa-brands fa-whatsapp"></i> ${a.clientPhone}
             </a>
           </td>

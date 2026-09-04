@@ -2,6 +2,14 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Aplica el tema guardado ANTES de pintar, para evitar parpadeo
+      (function () {
+        var t = localStorage.getItem("lions_theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lions Barber Shop | Ibagué - Reservas & Barbería Premium</title>
 
@@ -123,13 +131,13 @@
           >
             <i class="fa-solid fa-scissors"></i> Reservar Mi Cita Ahora
           </button>
-          <a
-            href="https://api.whatsapp.com/message/2GRNX7WWAKYKN1?autoload=1&app_absent=0&utm_source=ig"
-            target="_blank"
+          <button
+            type="button"
+            onclick="app.openWhatsappModal()"
             class="btn btn-outline btn-lg"
           >
             <i class="fa-brands fa-whatsapp"></i> WhatsApp Oficial
-          </a>
+          </button>
         </div>
 
         <div class="hero-stats">
@@ -373,8 +381,8 @@
               ><i class="fa-brands fa-facebook-f"></i
             ></a>
             <a
-              href="https://api.whatsapp.com/message/2GRNX7WWAKYKN1?autoload=1&app_absent=0&utm_source=ig"
-              target="_blank"
+              href="javascript:void(0)"
+              onclick="app.openWhatsappModal()"
               title="WhatsApp Oficial"
               ><i class="fa-brands fa-whatsapp"></i
             ></a>
@@ -443,15 +451,87 @@
     </footer>
 
     <!-- ==================== BOTÓN FLOTANTE DE WHATSAPP ==================== -->
-    <a
-      href="https://api.whatsapp.com/message/2GRNX7WWAKYKN1?autoload=1&app_absent=0&utm_source=ig"
-      target="_blank"
+    <button
+      type="button"
+      onclick="app.openWhatsappModal()"
       class="whatsapp-float"
       title="Contactar por WhatsApp"
     >
       <i class="fa-brands fa-whatsapp"></i>
       <span class="float-tooltip">¡Escríbenos por WhatsApp!</span>
-    </a>
+    </button>
+
+    <!-- ==================== MODAL: ELEGIR MENSAJE DE WHATSAPP ==================== -->
+    <div class="modal-backdrop" id="whatsapp-modal" aria-hidden="true">
+      <div class="modal-box payment-modal-box text-center">
+        <button class="modal-close" onclick="app.closeWhatsappModal()">
+          &times;
+        </button>
+        <div class="modal-icon-badge" style="margin: 0 auto 1rem">
+          <i class="fa-brands fa-whatsapp text-gold"></i>
+        </div>
+        <h3 class="modal-title text-gold">¿Qué quieres decirnos?</h3>
+        <p class="modal-subtitle mb-3">
+          Elige un mensaje rápido o escribe el tuyo antes de ir a WhatsApp.
+        </p>
+
+        <div class="payment-options-grid">
+          <div
+            class="payment-option-card"
+            onclick="
+              app.sendWhatsappPreset(
+                'Hola Lions Barber Shop 💈, quiero agendar una cita.',
+              )
+            "
+          >
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Quiero agendar una cita</span>
+          </div>
+          <div
+            class="payment-option-card"
+            onclick="
+              app.sendWhatsappPreset(
+                'Hola Lions Barber Shop 💈, tengo una pregunta sobre servicios y precios.',
+              )
+            "
+          >
+            <i class="fa-solid fa-circle-question"></i>
+            <span>Pregunta sobre servicios y precios</span>
+          </div>
+          <div
+            class="payment-option-card"
+            onclick="
+              app.sendWhatsappPreset(
+                'Hola Lions Barber Shop 💈, quiero información sobre horarios y sedes.',
+              )
+            "
+          >
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Horarios y sedes</span>
+          </div>
+        </div>
+
+        <div class="form-group mt-3 text-left">
+          <label for="whatsapp-custom-message">
+            <i class="fa-solid fa-pen text-gold"></i> O escribe tu propio
+            mensaje:
+          </label>
+          <textarea
+            id="whatsapp-custom-message"
+            class="form-input"
+            rows="3"
+            placeholder="Escribe aquí lo que quieras preguntarnos..."
+          ></textarea>
+        </div>
+
+        <button
+          class="btn btn-gold btn-block mt-2"
+          onclick="app.sendWhatsappCustom()"
+        >
+          <i class="fa-brands fa-whatsapp"></i> Enviar este mensaje
+        </button>
+      </div>
+    </div>
 
     <!-- ==================== MODAL DE AGENDAMIENTO ==================== -->
     <div class="modal-backdrop" id="booking-modal" aria-hidden="true">
@@ -635,7 +715,10 @@
       </div>
     </div>
 
+    <!-- Botón de Cambio de Tema (Oscuro/Claro) -->
+    <script src="theme.js"></script>
+
     <!-- Script JS -->
     <script src="script.js"></script>
   </body>
-</html>
+</html> 

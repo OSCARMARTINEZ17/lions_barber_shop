@@ -2,6 +2,14 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Aplica el tema guardado ANTES de pintar, para evitar parpadeo
+      (function () {
+        var t = localStorage.getItem("lions_theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lions Barber Shop | Portal del Barbero</title>
 
@@ -301,6 +309,9 @@
         </div>
       </div>
     </div>
+
+    <!-- Botón de Cambio de Tema (Oscuro/Claro) -->
+    <script src="theme.js"></script>
 
     <!-- Script del Portal del Barbero -->
     <script src="barbero.js"></script>

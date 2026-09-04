@@ -347,6 +347,39 @@ class LionsBarberShopApp {
     if (modal) modal.classList.remove("active");
   }
 
+  // ==================== MODAL: MENSAJE DE WHATSAPP ====================
+  openWhatsappModal() {
+    const modal = document.getElementById("whatsapp-modal");
+    if (modal) modal.classList.add("active");
+  }
+
+  closeWhatsappModal() {
+    const modal = document.getElementById("whatsapp-modal");
+    if (modal) modal.classList.remove("active");
+    const textarea = document.getElementById("whatsapp-custom-message");
+    if (textarea) textarea.value = "";
+  }
+
+  sendWhatsappPreset(message) {
+    this.openWhatsappLink(message);
+  }
+
+  sendWhatsappCustom() {
+    const textarea = document.getElementById("whatsapp-custom-message");
+    const message = (textarea?.value || "").trim();
+    if (!message) {
+      alert("✏️ Escribe un mensaje antes de continuar.");
+      return;
+    }
+    this.openWhatsappLink(message);
+  }
+
+  openWhatsappLink(message) {
+    const url = `https://wa.me/573167075129?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+    this.closeWhatsappModal();
+  }
+
   quickBookService(id) {
     this.openBookingModal();
     this.selectService(id);

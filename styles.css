@@ -1820,3 +1820,86 @@ img {
     padding: 1.5rem;
   }
 }
+/* ==========================================================================
+   BANNER DE CONSENTIMIENTO DE COOKIES
+   ========================================================================== */
+.cookie-consent-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -200px;
+  z-index: 9998;
+  background: var(--bg-surface-elevated);
+  border-top: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+  padding: 1.2rem 1.5rem;
+  transition: bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cookie-consent-banner.show {
+  bottom: 0;
+}
+
+.cookie-consent-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.cookie-consent-icon {
+  font-size: 1.8rem;
+  color: var(--gold-primary);
+  flex-shrink: 0;
+}
+
+.cookie-consent-text {
+  flex: 1;
+  min-width: 220px;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.cookie-consent-text a {
+  color: var(--gold-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.cookie-consent-actions {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+@media (max-width: 640px) {
+  .cookie-consent-content {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .cookie-consent-actions {
+    width: 100%;
+    margin-left: 0;
+  }
+  .cookie-consent-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Evita que el banner tape los botones flotantes mientras está visible */
+body.cookie-banner-active .whatsapp-float,
+body.cookie-banner-active .theme-toggle-btn {
+  bottom: 110px;
+  transition: bottom 0.4s ease;
+}
+
+@media (max-width: 576px) {
+  body.cookie-banner-active .whatsapp-float,
+  body.cookie-banner-active .theme-toggle-btn {
+    bottom: 150px;
+  }
+}

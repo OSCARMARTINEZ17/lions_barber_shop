@@ -1,7 +1,9 @@
 /**
  * ==========================================================================
- * LIONS BARBER SHOP - IBAGUÉ, COLOMBIA (script.js)
- * CEO: Yeico Quintero
+ * LIONS BARBER SHOP - IBAGUÉ (script.js)
+ * Horarios:
+ *  - Lun a Sáb: 8:00 AM - 12:00 PM y 2:00 PM - 8:00 PM
+ *  - Domingos: 9:00 AM - 1:00 PM
  * ==========================================================================
  */
 
@@ -10,22 +12,18 @@ class LionsBarberShopApp {
     this.storageKey = "lions_barber_appointments_v1";
     this.configKey = "lions_barber_config_v1";
 
-    // Configuración Contable
     this.config = this.loadConfig();
-
-    // Enlace de WhatsApp Oficial de Lions Barber Shop
     this.officialWhatsAppUrl =
       "https://api.whatsapp.com/message/2GRNX7WWAKYKN1?autoload=1&app_absent=0&utm_source=ig";
 
-    // Sedes reales de Ibagué
+    // Sedes
     this.branches = [
       {
         id: "sede-principal",
         name: "Sede Principal (Cl. 11 #12-38)",
         address: "Cl. 11 #12-38, Ibagué, Tolima",
         mapsUrl: "https://maps.app.goo.gl/zGFsDWxk14tmvYZAA",
-        phone: "+57 (Ibagué)",
-        hours: "Lun - Sáb: 9:00 AM - 8:30 PM | Dom: 10:00 AM - 6:00 PM",
+        hours: "Lun-Sáb: 8am-12pm y 2pm-8pm | Dom: 9am-1pm",
         icon: "fa-crown",
         description:
           "Sede Principal con 3 barberos de élite, zona lounge y atención personalizada.",
@@ -35,17 +33,15 @@ class LionsBarberShopApp {
         name: "2da Sede (Cra. 13 A #5-13)",
         address: "Cra. 13 A #5-13, Ibagué, Tolima",
         mapsUrl: "https://maps.app.goo.gl/zGFsDWxk14tmvYZAA",
-        phone: "+57 (Ibagué)",
-        hours: "Lun - Sáb: 9:00 AM - 8:30 PM | Dom: 10:00 AM - 6:00 PM",
+        hours: "Lun-Sáb: 8am-12pm y 2pm-8pm | Dom: 9am-1pm",
         icon: "fa-gem",
         description:
           "Atención exclusiva con nuestro CEO Yeico Quintero. Imagen, clase y máxima precisión.",
       },
     ];
 
-    // Catálogo de Barberos (3 en la principal y Yeico en la 2da sede)
+    // Barberos
     this.barbers = [
-      // 2da Sede (CEO)
       {
         id: "barber-yeico",
         name: "Yeico Quintero (CEO)",
@@ -53,46 +49,44 @@ class LionsBarberShopApp {
         branchId: "sede-segunda",
         branchName: "2da Sede (Cra. 13 A #5-13)",
         specialty:
-          "Cortes exclusivos, visagismo ejecutivo, degradados de alta gama y diseño de barba",
+          "Cortes ejecutivos, visagismo, degradados de alta gama y barba",
         rating: 5.0,
         avatarIcon: "fa-crown",
         instagram: "https://www.instagram.com/yeico_quintero/",
       },
-      // Sede Principal (3 Barberos)
       {
         id: "barber-principal-1",
         name: 'Carlos "Fade Master"',
-        role: "Barbero Profesional Senior",
+        role: "Senior Barber",
         branchId: "sede-principal",
         branchName: "Sede Principal (Cl. 11 #12-38)",
-        specialty: "Skin Fade, Taper Fade, Texturizados & Perfilado clásico",
+        specialty: "Skin Fade, Taper Fade & Texturizados",
         rating: 4.9,
         avatarIcon: "fa-scissors",
       },
       {
         id: "barber-principal-2",
         name: 'Andrés "The Razor"',
-        role: "Especialista en Barba & Navaja",
+        role: "Especialista en Barba",
         branchId: "sede-principal",
         branchName: "Sede Principal (Cl. 11 #12-38)",
-        specialty:
-          "Ritual de barba imperial, toalla caliente y corte clásico a tijera",
+        specialty: "Ritual de barba imperial, toalla caliente y navaja clásica",
         rating: 4.9,
         avatarIcon: "fa-user-ninja",
       },
       {
         id: "barber-principal-3",
         name: 'Mateo "Freestyle"',
-        role: "Especialista en Color & Diseños",
+        role: "Color & Diseños",
         branchId: "sede-principal",
         branchName: "Sede Principal (Cl. 11 #12-38)",
-        specialty: "Platinados, líneas creativas, degradados modernos y cejas",
+        specialty: "Platinados, freestyle urbano y perfilado de cejas",
         rating: 4.8,
         avatarIcon: "fa-palette",
       },
     ];
 
-    // Servicios & Tarifas
+    // Servicios
     this.services = [
       {
         id: "serv-corte-clasico",
@@ -101,7 +95,7 @@ class LionsBarberShopApp {
         price: 25000,
         duration: "40 min",
         description:
-          "Asesoría de visagismo, corte personalizado a máquina y tijera, lavado refrescante y peinado con cera/pomada.",
+          "Visagismo, corte personalizado a máquina y tijera, lavado y peinado con pomada.",
         icon: "fa-scissors",
         popular: true,
       },
@@ -112,7 +106,7 @@ class LionsBarberShopApp {
         price: 18000,
         duration: "30 min",
         description:
-          "Perfilado milimétrico con navaja tradicional, toalla caliente aromatizada, aceites hidratantes y masaje relajante.",
+          "Perfilado milimétrico con navaja tradicional, toalla caliente aromatizada y aceites.",
         icon: "fa-wand-magic-sparkles",
         popular: false,
       },
@@ -123,7 +117,7 @@ class LionsBarberShopApp {
         price: 40000,
         duration: "60 min",
         description:
-          "La experiencia completa: Corte signature, perfilado de barba, doble toalla caliente, perfilado de cejas y bebida de cortesía.",
+          "Corte signature, diseño de barba, doble toalla caliente, perfilado de cejas y bebida.",
         icon: "fa-crown",
         popular: true,
       },
@@ -134,7 +128,7 @@ class LionsBarberShopApp {
         price: 20000,
         duration: "35 min",
         description:
-          "Atención paciente y dedicada para los pequeños caballeros, incluye diseño suave y fijación.",
+          "Atención paciente para los pequeños caballeros, incluye diseño suave y cera.",
         icon: "fa-child",
         popular: false,
       },
@@ -145,7 +139,7 @@ class LionsBarberShopApp {
         price: 22000,
         duration: "30 min",
         description:
-          "Limpieza de impurezas, extracción de puntos negros, hidratación profunda y tónico refrescante.",
+          "Limpieza de impurezas, extracción de puntos negros, hidratación profunda y tónico.",
         icon: "fa-spa",
         popular: false,
       },
@@ -156,7 +150,7 @@ class LionsBarberShopApp {
         price: 80000,
         duration: "90 min",
         description:
-          "Decoloración profesional cuidando la hebra capilar, matización platinada o tonos de tendencia.",
+          "Decoloración profesional cuidando el cabello, matización platinada o tonos de tendencia.",
         icon: "fa-palette",
         popular: false,
       },
@@ -331,7 +325,7 @@ class LionsBarberShopApp {
     }
   }
 
-  // Modales y Agendamiento
+  // Modales
   openBookingModal() {
     const modal = document.getElementById("booking-modal");
     if (modal) {
@@ -388,15 +382,8 @@ class LionsBarberShopApp {
     if (!container) return;
 
     const available = this.barbers.filter((b) => b.branchId === branchId);
-    let html = `
-      <div class="custom-radio-card ${this.bookingState.barberId === "any" || !this.bookingState.barberId ? "selected" : ""}" onclick="app.selectBarber('any')">
-        <i class="fa-solid fa-circle-check card-check-icon"></i>
-        <div class="card-title"><i class="fa-solid fa-users text-gold"></i> Primer Barbero Disponible</div>
-        <div class="card-desc">Asignación automática rápida</div>
-      </div>
-    `;
 
-    html += available
+    const html = available
       .map(
         (barber) => `
       <div class="custom-radio-card ${this.bookingState.barberId === barber.id ? "selected" : ""}" onclick="app.selectBarber('${barber.id}')">
@@ -409,11 +396,8 @@ class LionsBarberShopApp {
       .join("");
 
     container.innerHTML = html;
-    if (
-      this.bookingState.barberId !== "any" &&
-      !available.some((b) => b.id === this.bookingState.barberId)
-    ) {
-      this.selectBarber("any");
+    if (!available.some((b) => b.id === this.bookingState.barberId)) {
+      this.selectBarber(available[0] ? available[0].id : null);
     }
   }
 
@@ -426,13 +410,8 @@ class LionsBarberShopApp {
       const available = this.barbers.filter(
         (b) => b.branchId === this.bookingState.branchId,
       );
-      if (barberId === "any") {
-        cards[0]?.classList.add("selected");
-      } else {
-        const idx = available.findIndex((b) => b.id === barberId);
-        if (idx !== -1 && cards[idx + 1])
-          cards[idx + 1].classList.add("selected");
-      }
+      const idx = available.findIndex((b) => b.id === barberId);
+      if (idx !== -1 && cards[idx]) cards[idx].classList.add("selected");
     }
     this.updateSummary();
   }
@@ -470,26 +449,52 @@ class LionsBarberShopApp {
     }
   }
 
+  // ==================== CÁLCULO INTELIGENTE DE HORARIOS ====================
   onDateSelected() {
+    const dateInput = document.getElementById("booking-date");
     const timeSelect = document.getElementById("booking-time");
-    if (!timeSelect) return;
-    const slots = [
-      "09:00 AM",
-      "09:45 AM",
-      "10:30 AM",
-      "11:15 AM",
-      "12:00 PM",
-      "01:00 PM",
-      "01:45 PM",
-      "02:30 PM",
-      "03:15 PM",
-      "04:00 PM",
-      "04:45 PM",
-      "05:30 PM",
-      "06:15 PM",
-      "07:00 PM",
-      "07:45 PM",
-    ];
+    if (!dateInput || !timeSelect) return;
+
+    const selectedDate = dateInput.value;
+    if (!selectedDate) return;
+
+    // Obtener día de la semana (0 = Domingo, 1 a 6 = Lunes a Sábado)
+    const dayOfWeek = new Date(selectedDate + "T00:00:00").getDay();
+
+    let slots = [];
+
+    if (dayOfWeek === 0) {
+      // DOMINGOS: 9:00 AM - 1:00 PM
+      slots = [
+        "09:00 AM",
+        "09:40 AM",
+        "10:20 AM",
+        "11:00 AM",
+        "11:40 AM",
+        "12:20 PM",
+      ];
+    } else {
+      // LUNES A SÁBADO: 8:00 AM a 12:00 PM y 2:00 PM a 8:00 PM
+      slots = [
+        // Mañana
+        "08:00 AM",
+        "08:45 AM",
+        "09:30 AM",
+        "10:15 AM",
+        "11:00 AM",
+        "11:40 AM",
+        // Tarde (después de almuerzo)
+        "02:00 PM",
+        "02:45 PM",
+        "03:30 PM",
+        "04:15 PM",
+        "05:00 PM",
+        "05:45 PM",
+        "06:30 PM",
+        "07:15 PM",
+      ];
+    }
+
     timeSelect.innerHTML = slots
       .map((s) => `<option value="${s}">${s}</option>`)
       .join("");
@@ -502,8 +507,8 @@ class LionsBarberShopApp {
     const branch = this.branches.find(
       (b) => b.id === this.bookingState.branchId,
     );
-    let barberName = "Primer Barbero Disponible";
-    if (this.bookingState.barberId && this.bookingState.barberId !== "any") {
+    let barberName = "";
+    if (this.bookingState.barberId) {
       const b = this.barbers.find(
         (bar) => bar.id === this.bookingState.barberId,
       );
@@ -532,8 +537,10 @@ class LionsBarberShopApp {
       this.services.find((s) => s.id === this.bookingState.serviceId) ||
       this.services[0];
     let barber = this.barbers.find((b) => b.id === this.bookingState.barberId);
-    if (!barber || this.bookingState.barberId === "any") {
-      barber = { id: "barber-any", name: "Primer Barbero Disponible (Sede)" };
+    if (!barber) {
+      barber = branch
+        ? this.barbers.find((b) => b.branchId === branch.id)
+        : this.barbers[0];
     }
 
     const dateVal = document.getElementById("booking-date").value;
@@ -589,7 +596,6 @@ class LionsBarberShopApp {
 ━━━━━━━━━━━━━━━━━━━━
 _Por favor confírmame disponibilidad para quedar agendado. ¡Muchas gracias!_`;
 
-    // Enlace oficial de WhatsApp con el mensaje pre-cargado
     const whatsappUrl = `https://api.whatsapp.com/message/2GRNX7WWAKYKN1?text=${encodeURIComponent(whatsappMsg)}`;
 
     this.closeBookingModal();
@@ -615,7 +621,7 @@ _Por favor confírmame disponibilidad para quedar agendado. ¡Muchas gracias!_`;
         <div class="ticket-row"><span class="ticket-label">Servicio:</span><span class="ticket-value">${appointment.serviceName}</span></div>
         <div class="ticket-row"><span class="ticket-label">Fecha y Hora:</span><span class="ticket-value">${appointment.date} | ${appointment.time}</span></div>
         <div class="ticket-row" style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.5rem; margin-top: 0.5rem;">
-          <span class="ticket-label">Total a Pagar en Sede:</span>
+          <span class="ticket-label">Total a Pagar:</span>
           <span class="ticket-value text-gold" style="font-size: 1.1rem;">${this.formatMoney(appointment.price)}</span>
         </div>
       `;
@@ -631,21 +637,7 @@ _Por favor confírmame disponibilidad para quedar agendado. ¡Muchas gracias!_`;
     if (modal) modal.classList.remove("active");
   }
 
-  // Panel Admin & Contabilidad
-  openAdminModal() {
-    const modal = document.getElementById("admin-modal");
-    if (modal) {
-      modal.classList.add("active");
-      this.populateBranchFilters();
-      this.renderAdminDashboard();
-    }
-  }
-
-  closeAdminModal() {
-    const modal = document.getElementById("admin-modal");
-    if (modal) modal.classList.remove("active");
-  }
-
+  // ==================== FUNCIONES DEL PANEL ADMIN & CONTABILIDAD ====================
   switchAdminTab(tabName) {
     document
       .querySelectorAll(".admin-tab")
@@ -766,7 +758,7 @@ _Por favor confírmame disponibilidad para quedar agendado. ¡Muchas gracias!_`;
     });
 
     if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="11" class="text-center" style="padding: 2.5rem; color: var(--text-muted);"><i class="fa-solid fa-inbox" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>No hay registros que coincidan con los filtros.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="11" class="text-center" style="padding: 2.5rem; color: var(--text-muted);"><i class="fa-solid fa-inbox" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>No hay registros que coincidan.</td></tr>`;
       return;
     }
 
@@ -891,24 +883,10 @@ _Por favor confírmame disponibilidad para quedar agendado. ¡Muchas gracias!_`;
             <div class="finance-stats-row"><span class="card-desc">Comisión Barbero (${this.config.barberPercent}%):</span><span class="val-highlight">${this.formatMoney(payout)}</span></div>
             <div class="finance-stats-row"><span class="card-desc">Ganancia Neta Barbería:</span><strong class="text-gold">${this.formatMoney(shopProfit)}</strong></div>
           </div>
-          <div class="mt-3">
-            <button class="btn btn-outline btn-block btn-sm" onclick="app.filterTableByBarber('${barber.name.split(" ")[0]}')">
-              <i class="fa-solid fa-filter"></i> Ver Cortes de ${barber.name.split(" ")[0]}
-            </button>
-          </div>
         </div>
       `;
       })
       .join("");
-  }
-
-  filterTableByBarber(name) {
-    this.switchAdminTab("citas");
-    const search = document.getElementById("admin-search-input");
-    if (search) {
-      search.value = name;
-      this.renderAdminAppointmentsTable();
-    }
   }
 
   renderBranchesAccounting() {
@@ -970,7 +948,7 @@ _Por favor confírmame disponibilidad para quedar agendado. ¡Muchas gracias!_`;
     this.renderAdminDashboard();
   }
 
-  // Venta Manual en Mostrador
+  // Venta Manual
   openManualAppointmentModal() {
     const modal = document.getElementById("manual-modal");
     if (modal) modal.classList.add("active");
@@ -1050,7 +1028,7 @@ _Por favor confírmame disponibilidad para quedar agendado. ¡Muchas gracias!_`;
     alert("¡Venta registrada exitosamente en la contabilidad!");
   }
 
-  // Exportar Excel Profesional (.xlsx)
+  // Exportar Excel
   exportToExcel() {
     if (typeof XLSX === "undefined") {
       alert("Error: La librería SheetJS no está cargada.");
@@ -1167,7 +1145,7 @@ _Por favor confírmame disponibilidad para quedar agendado. ¡Muchas gracias!_`;
       {
         id: "LIONS-1045",
         date: today,
-        time: "10:30 AM",
+        time: "10:15 AM",
         clientName: "Juan Manuel Morales",
         clientPhone: "3104567890",
         branchId: "sede-segunda",
@@ -1186,7 +1164,7 @@ _Por favor confírmame disponibilidad para quedar agendado. ¡Muchas gracias!_`;
       {
         id: "LIONS-2311",
         date: today,
-        time: "11:15 AM",
+        time: "11:00 AM",
         clientName: "Santiago Herrera",
         clientPhone: "3201122334",
         branchId: "sede-principal",
@@ -1205,7 +1183,7 @@ _Por favor confírmame disponibilidad para quedar agendado. ¡Muchas gracias!_`;
       {
         id: "LIONS-3920",
         date: today,
-        time: "04:00 PM",
+        time: "03:30 PM",
         clientName: "Daniel Benítez",
         clientPhone: "3142233445",
         branchId: "sede-principal",

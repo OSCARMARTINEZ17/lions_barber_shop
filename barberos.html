@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lions Barber Shop | Portal del Barbero</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpg" href="multimedia/logo.jpg" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Hoja de Estilos -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="barber-portal-body">
+    <!-- ==================== PANTALLA DE SELECCIÓN Y LOGIN ==================== -->
+    <div id="barber-login-screen" class="admin-login-wrapper">
+      <div class="login-box">
+        <img
+          src="multimedia/logo.jpg"
+          onerror="this.src = 'multimedia/logo.png'"
+          alt="Lions Logo"
+          class="login-logo"
+        />
+        <h2 class="gold-text">Portal del Barbero</h2>
+        <p class="text-muted">Lions Barber Shop • Ibagué</p>
+
+        <form onsubmit="barberApp.handleLogin(event)" class="mt-4 text-left">
+          <div class="form-group mb-3">
+            <label for="select-barber-login"
+              ><i class="fa-solid fa-scissors text-gold"></i> Selecciona tu
+              Perfil:</label
+            >
+            <select id="select-barber-login" class="form-input" required>
+              <!-- Llenado dinámico desde barbero.js -->
+            </select>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="barber-pin"
+              ><i class="fa-solid fa-lock text-gold"></i> Tu PIN de
+              Barbero:</label
+            >
+            <input
+              type="password"
+              id="barber-pin"
+              class="form-input text-center"
+              placeholder="Ingresa tu PIN"
+              required
+              autofocus
+            />
+          </div>
+
+          <button type="submit" class="btn btn-gold btn-block mt-3">
+            <i class="fa-solid fa-right-to-bracket"></i> Ver Mi Agenda de Cortes
+          </button>
+
+          <a href="index.html" class="btn btn-outline btn-block mt-2">
+            <i class="fa-solid fa-arrow-left"></i> Volver a la Web Principal
+          </a>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== DASHBOARD PRIVADO DEL BARBERO ==================== -->
+    <div id="barber-dashboard-screen" style="display: none">
+      <!-- Topbar Barbero -->
+      <header class="admin-topbar">
+        <div class="container nav-container">
+          <div class="brand-logo">
+            <img
+              src="multimedia/logo.jpg"
+              onerror="this.src = 'multimedia/logo.png'"
+              alt="Logo"
+              class="nav-logo-img"
+            />
+            <div class="brand-text">
+              <span class="brand-name" id="barber-display-name"
+                >MI ESTACIÓN</span
+              >
+              <span class="brand-sub" id="barber-display-branch"
+                >SEDE IBAGUÉ</span
+              >
+            </div>
+          </div>
+
+          <div class="nav-actions">
+            <button
+              class="btn btn-outline btn-sm"
+              onclick="barberApp.changeMyPin()"
+              title="Cambiar mi PIN"
+            >
+              <i class="fa-solid fa-key"></i> Cambiar PIN
+            </button>
+            <a href="index.html" class="btn btn-outline btn-sm">
+              <i class="fa-solid fa-globe"></i> Web
+            </a>
+            <button class="btn btn-danger btn-sm" onclick="barberApp.logout()">
+              <i class="fa-solid fa-right-from-bracket"></i> Salir
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Contenido Principal -->
+      <main class="container py-4">
+        <!-- KPIs Personales del Barbero -->
+        <div class="finance-kpis-grid mt-4">
+          <div class="kpi-card">
+            <div class="kpi-icon gold-bg">
+              <i class="fa-solid fa-scissors"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-title">Cortes de Hoy</span>
+              <h3 class="kpi-value" id="barber-today-count">0</h3>
+              <small class="kpi-sub" id="barber-today-status"
+                >0 Pendientes | 0 Listos</small
+              >
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon green-bg">
+              <i class="fa-solid fa-hand-holding-dollar"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-title">Mis Ganancias de Hoy</span>
+              <h3 class="kpi-value" id="barber-today-earnings">$0</h3>
+              <small class="kpi-sub">Comisión acumulada hoy</small>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon blue-bg">
+              <i class="fa-solid fa-wallet"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-title">Mis Ganancias del Mes</span>
+              <h3 class="kpi-value" id="barber-month-earnings">$0</h3>
+              <small class="kpi-sub">Total cobrado este mes</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra de Filtros de la Agenda -->
+        <div class="admin-toolbar mt-4">
+          <div>
+            <h3 class="gold-text">
+              <i class="fa-solid fa-calendar-check"></i> Mi Agenda de Clientes
+            </h3>
+            <p class="text-muted" style="font-size: 0.9rem">
+              Revisa tus turnos y avísale a tus clientes por WhatsApp cuando
+              estés listo.
+            </p>
+          </div>
+
+          <div class="toolbar-filters">
+            <button
+              class="btn btn-outline btn-sm active"
+              id="btn-filter-today"
+              onclick="barberApp.filterDay('today')"
+            >
+              <i class="fa-solid fa-calendar-day"></i> Citas de Hoy
+            </button>
+            <button
+              class="btn btn-outline btn-sm"
+              id="btn-filter-all"
+              onclick="barberApp.filterDay('all')"
+            >
+              <i class="fa-solid fa-list"></i> Todo Mi Historial
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabla / Tarjetas de Turnos -->
+        <div class="table-responsive mt-3">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Hora</th>
+                <th>Cliente</th>
+                <th>Teléfono</th>
+                <th>Servicio Solicitado</th>
+                <th>Notas / Preferencia</th>
+                <th>Mi Comisión</th>
+                <th>Estado</th>
+                <th>Acciones Rápidas</th>
+              </tr>
+            </thead>
+            <tbody id="barber-appointments-tbody">
+              <!-- Dinámico desde barbero.js -->
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <!-- ==================== MODAL: MÉTODO DE PAGO ==================== -->
+    <div class="modal-backdrop" id="payment-modal">
+      <div class="modal-box payment-modal-box text-center">
+        <button class="modal-close" onclick="barberApp.closePaymentModal()">
+          &times;
+        </button>
+        <div class="modal-icon-badge" style="margin: 0 auto 1rem">
+          <i class="fa-solid fa-cash-register text-gold"></i>
+        </div>
+        <h3 class="modal-title text-gold">¿Cómo pagó el cliente?</h3>
+        <p class="modal-subtitle mb-3">
+          Selecciona el método para cerrar este corte.
+        </p>
+
+        <div class="payment-options-grid">
+          <div
+            class="payment-option-card"
+            onclick="barberApp.confirmPayment('Efectivo')"
+          >
+            <i class="fa-solid fa-money-bill-wave"></i>
+            <span>Efectivo</span>
+          </div>
+          <div
+            class="payment-option-card"
+            onclick="
+              barberApp.confirmPayment('Transferencia / Nequi / Daviplata')
+            "
+          >
+            <i class="fa-solid fa-mobile-screen-button"></i>
+            <span>Nequi / Daviplata / Transferencia</span>
+          </div>
+          <div
+            class="payment-option-card"
+            onclick="barberApp.confirmPayment('Tarjeta Débito/Crédito')"
+          >
+            <i class="fa-solid fa-credit-card"></i>
+            <span>Tarjeta Débito/Crédito</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== MODAL: CORTE COMPLETADO ==================== -->
+    <div class="modal-backdrop" id="payment-success-modal">
+      <div class="modal-box success-modal-box text-center">
+        <div class="success-icon-wrap">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <h3 class="modal-title text-gold">¡Corte Completado!</h3>
+        <p class="success-subtitle" id="payment-success-text"></p>
+        <button
+          class="btn btn-gold btn-block mt-3"
+          onclick="barberApp.closePaymentSuccessModal()"
+        >
+          <i class="fa-solid fa-thumbs-up"></i> ¡Genial!
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== MODAL: CONFIRMAR CANCELACIÓN ==================== -->
+    <div class="modal-backdrop" id="cancel-confirm-modal">
+      <div class="modal-box payment-modal-box text-center">
+        <button class="modal-close" onclick="barberApp.closeCancelModal()">
+          &times;
+        </button>
+        <div class="modal-icon-badge" style="margin: 0 auto 1rem">
+          <i class="fa-solid fa-triangle-exclamation text-danger"></i>
+        </div>
+        <h3 class="modal-title text-gold">¿Cancelar esta cita?</h3>
+        <p class="modal-subtitle mb-3">
+          El cliente quedará marcado como "Cancelado" en tu agenda. Puedes
+          reabrirla después si te equivocas.
+        </p>
+
+        <div class="cancel-modal-actions">
+          <button
+            class="btn btn-outline btn-block"
+            onclick="barberApp.closeCancelModal()"
+          >
+            No, mantener
+          </button>
+          <button
+            class="btn btn-danger btn-block"
+            onclick="barberApp.confirmCancelAppointment()"
+          >
+            <i class="fa-solid fa-xmark"></i> Sí, cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script del Portal del Barbero -->
+    <script src="barbero.js"></script>
+  </body>
+</html>

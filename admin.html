@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lions Barber Shop | Panel Admin Seguro & Contabilidad</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpg" href="multimedia/logo.jpg" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- SheetJS para Descargar Excel .xlsx -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- Hoja de Estilos -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="admin-body">
+    <!-- ==================== PANTALLA DE LOGIN POR PIN (CON SHA-256) ==================== -->
+    <div id="admin-login-screen" class="admin-login-wrapper">
+      <div class="login-box">
+        <img
+          src="multimedia/logo.jpg"
+          onerror="this.src = 'multimedia/logo.png'"
+          alt="Logo Lions"
+          class="login-logo"
+        />
+        <h2 class="gold-text">Acceso Administrativo</h2>
+        <p class="text-muted">Lions Barber Shop • Ibagué</p>
+
+        <form onsubmit="adminApp.handleLogin(event)" class="mt-4">
+          <div class="form-group text-left">
+            <label for="admin-pin"
+              ><i class="fa-solid fa-lock text-gold"></i> PIN de
+              Seguridad:</label
+            >
+            <input
+              type="password"
+              id="admin-pin"
+              class="form-input text-center"
+              placeholder="Ingresa tu PIN (Por defecto: 1234)"
+              autofocus
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-gold btn-block mt-3">
+            <i class="fa-solid fa-unlock"></i> Ingresar al Panel Seguro
+          </button>
+          <a href="index.html" class="btn btn-outline btn-block mt-2">
+            <i class="fa-solid fa-arrow-left"></i> Volver a la Web Principal
+          </a>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== PANEL DE CONTROL PRIVADO ==================== -->
+    <div id="admin-dashboard-screen" style="display: none">
+      <!-- Navbar Admin -->
+      <header class="admin-topbar">
+        <div class="container nav-container">
+          <div class="brand-logo">
+            <img
+              src="multimedia/logo.jpg"
+              onerror="this.src = 'multimedia/logo.png'"
+              alt="Logo"
+              class="nav-logo-img"
+            />
+            <div class="brand-text">
+              <span class="brand-name">PANEL CONTABLE</span>
+              <span class="brand-sub">LIONS BARBER SHOP IBAGUÉ</span>
+            </div>
+          </div>
+
+          <div class="nav-actions">
+            <button
+              class="btn btn-gold btn-sm"
+              onclick="adminApp.exportToExcel()"
+            >
+              <i class="fa-solid fa-file-excel"></i> Descargar Excel (.xlsx)
+            </button>
+            <button
+              class="btn btn-outline btn-sm"
+              onclick="adminApp.changePin()"
+              title="Cambiar PIN de Acceso"
+            >
+              <i class="fa-solid fa-key"></i> Cambiar PIN
+            </button>
+            <a href="index.html" class="btn btn-outline btn-sm">
+              <i class="fa-solid fa-globe"></i> Ver Web
+            </a>
+            <button class="btn btn-danger btn-sm" onclick="adminApp.logout()">
+              <i class="fa-solid fa-right-from-bracket"></i> Salir
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Contenido del Dashboard -->
+      <main class="container py-4">
+        <!-- KPIs Financieros -->
+        <div class="finance-kpis-grid mt-4">
+          <div class="kpi-card">
+            <div class="kpi-icon gold-bg">
+              <i class="fa-solid fa-coins"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-title">Ingresos Totales (Pagados)</span>
+              <h3 class="kpi-value" id="kpi-total-revenue">$0</h3>
+              <small class="kpi-sub" id="kpi-revenue-count"
+                >0 cortes pagados</small
+              >
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon blue-bg">
+              <i class="fa-solid fa-hand-holding-dollar"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-title">Liquidación a Barberos</span>
+              <h3 class="kpi-value" id="kpi-barbers-payout">$0</h3>
+              <small class="kpi-sub" id="kpi-barber-share-rate"
+                >Porcentaje: 50% configurado</small
+              >
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon green-bg">
+              <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-title">Ganancia Neta Barbería</span>
+              <h3 class="kpi-value" id="kpi-shop-profit">$0</h3>
+              <small class="kpi-sub">Margen operativo neto</small>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon purple-bg">
+              <i class="fa-solid fa-calendar-days"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-title">Total de Citas Activas</span>
+              <h3 class="kpi-value" id="kpi-total-appointments">0</h3>
+              <small class="kpi-sub" id="kpi-status-breakdown"
+                >0 Pendientes | 0 Pagadas</small
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Pestañas de Gestión -->
+        <div class="admin-tabs mt-4">
+          <button
+            class="admin-tab active"
+            onclick="adminApp.switchAdminTab('citas')"
+          >
+            <i class="fa-solid fa-list-check"></i> Registro de Citas & Cobros
+          </button>
+          <button
+            class="admin-tab"
+            onclick="adminApp.switchAdminTab('barberos-stats')"
+          >
+            <i class="fa-solid fa-users-gear"></i> Liquidación por Barbero
+          </button>
+          <button
+            class="admin-tab"
+            onclick="adminApp.switchAdminTab('sedes-stats')"
+          >
+            <i class="fa-solid fa-shop"></i> Rendimiento por Sede
+          </button>
+          <button
+            class="admin-tab"
+            onclick="adminApp.switchAdminTab('papelera')"
+          >
+            <i class="fa-solid fa-box-archive"></i> Papelera & Auditoría
+            <span id="badge-archive-count" class="badge-count">0</span>
+          </button>
+          <button class="admin-tab" onclick="adminApp.switchAdminTab('config')">
+            <i class="fa-solid fa-sliders"></i> Ajustes de Comisiones
+          </button>
+        </div>
+
+        <!-- Tab 1: Citas Activas -->
+        <div class="admin-tab-content active" id="tab-citas">
+          <div class="admin-toolbar">
+            <div class="toolbar-search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                id="admin-search-input"
+                placeholder="Buscar por cliente, teléfono, barbero o ID..."
+                onkeyup="adminApp.renderAdminAppointmentsTable()"
+              />
+            </div>
+
+            <div class="toolbar-filters">
+              <select
+                id="filter-status"
+                onchange="adminApp.renderAdminAppointmentsTable()"
+              >
+                <option value="all">Todos los Estados</option>
+                <option value="Pendiente">Solo Pendientes</option>
+                <option value="Completado / Pagado">Solo Pagados</option>
+                <option value="Cancelado">Solo Cancelados</option>
+              </select>
+
+              <select
+                id="filter-branch"
+                onchange="adminApp.renderAdminAppointmentsTable()"
+              >
+                <option value="all">Todas las Sedes</option>
+              </select>
+
+              <select
+                id="filter-timeframe"
+                onchange="adminApp.renderAdminAppointmentsTable()"
+              >
+                <option value="all">Historial Completo</option>
+                <option value="today">Hoy</option>
+                <option value="month">Este Mes</option>
+              </select>
+
+              <button
+                class="btn btn-gold btn-sm"
+                onclick="adminApp.openManualAppointmentModal()"
+              >
+                <i class="fa-solid fa-plus"></i> Registrar Venta en Local
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha & Hora</th>
+                  <th>Cliente</th>
+                  <th>Teléfono</th>
+                  <th>Sede</th>
+                  <th>Barbero</th>
+                  <th>Servicio</th>
+                  <th>Precio</th>
+                  <th>Método Pago</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="admin-appointments-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 2: Barberos -->
+        <div class="admin-tab-content" id="tab-barberos-stats">
+          <div
+            class="barbers-accounting-grid"
+            id="barbers-accounting-container"
+          ></div>
+        </div>
+
+        <!-- Tab 3: Sedes -->
+        <div class="admin-tab-content" id="tab-sedes-stats">
+          <div
+            class="branches-accounting-grid"
+            id="branches-accounting-container"
+          ></div>
+        </div>
+
+        <!-- Tab 4: Papelera & Auditoría Permanente -->
+        <div class="admin-tab-content" id="tab-papelera">
+          <div class="alert-box-info mb-4">
+            <i class="fa-solid fa-shield-halved text-gold"></i>
+            <span
+              ><strong>Registro de Auditoría Permanente:</strong> Los registros
+              archivados nunca se destruyen. Puedes consultarlos y restaurarlos
+              en cualquier momento.</span
+            >
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha Cita</th>
+                  <th>Cliente</th>
+                  <th>Sede</th>
+                  <th>Barbero</th>
+                  <th>Servicio</th>
+                  <th>Valor ($)</th>
+                  <th>Fecha Archivado</th>
+                  <th>Motivo de Baja</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody id="archived-appointments-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 5: Configuración -->
+        <div class="admin-tab-content" id="tab-config">
+          <div class="config-card">
+            <h4 class="config-title">
+              <i class="fa-solid fa-percent text-gold"></i> Configuración de
+              Comisiones
+            </h4>
+            <p class="config-desc">
+              Define el porcentaje de comisión predeterminado que recibe el
+              barbero sobre cada servicio completado.
+            </p>
+
+            <div class="form-row-2 mt-3">
+              <div class="form-group">
+                <label for="config-barber-percent"
+                  >Comisión para el Barbero (%):</label
+                >
+                <input
+                  type="number"
+                  id="config-barber-percent"
+                  class="form-input"
+                  min="0"
+                  max="100"
+                  value="50"
+                  onchange="adminApp.updateCommissionRate()"
+                />
+              </div>
+              <div class="form-group">
+                <label>Porcentaje Barbería Lions (%):</label>
+                <input
+                  type="text"
+                  id="config-shop-percent"
+                  class="form-input"
+                  value="50%"
+                  readonly
+                  disabled
+                />
+              </div>
+            </div>
+
+            <div class="alert-box-info mt-3">
+              <i class="fa-solid fa-circle-info text-gold"></i>
+              <span
+                >Los cambios se aplican automáticamente a los cálculos contables
+                y a las descargas en Excel.</span
+              >
+            </div>
+
+            <div class="config-actions mt-4">
+              <button
+                class="btn btn-danger btn-sm"
+                onclick="adminApp.resetSampleData()"
+              >
+                <i class="fa-solid fa-rotate-left"></i> Restaurar Datos de
+                Ejemplo
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal de Venta Manual en Mostrador -->
+    <div class="modal-backdrop" id="manual-modal" aria-hidden="true">
+      <div class="modal-box manual-modal-box">
+        <button class="modal-close" onclick="adminApp.closeManualModal()">
+          &times;
+        </button>
+        <div class="modal-header">
+          <div class="modal-icon-badge">
+            <i class="fa-solid fa-cash-register text-gold"></i>
+          </div>
+          <div>
+            <h3 class="modal-title">Registrar Venta Directa en Local</h3>
+            <p class="modal-subtitle">
+              Para clientes que asisten directamente sin agendamiento previo
+            </p>
+          </div>
+        </div>
+        <form onsubmit="adminApp.handleManualSaleSubmit(event)">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="manual-client">Nombre del Cliente:</label>
+              <input
+                type="text"
+                id="manual-client"
+                class="form-input"
+                placeholder="Cliente en local"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="manual-phone">Teléfono / WhatsApp:</label>
+              <input
+                type="tel"
+                id="manual-phone"
+                class="form-input"
+                placeholder="3100000000"
+              />
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="manual-branch">Sede:</label>
+              <select
+                id="manual-branch"
+                class="form-input"
+                required
+                onchange="adminApp.updateManualBarbers()"
+              ></select>
+            </div>
+            <div class="form-group">
+              <label for="manual-barber">Barbero:</label>
+              <select id="manual-barber" class="form-input" required></select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="manual-service">Servicio:</label>
+              <select
+                id="manual-service"
+                class="form-input"
+                required
+                onchange="adminApp.updateManualServicePrice()"
+              ></select>
+            </div>
+            <div class="form-group">
+              <label for="manual-price">Precio Cobrado ($):</label>
+              <input
+                type="number"
+                id="manual-price"
+                class="form-input"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="manual-payment-method">Método de Pago:</label>
+              <select id="manual-payment-method" class="form-input" required>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia / Nequi / Daviplata">
+                  Transferencia / Nequi / Daviplata
+                </option>
+                <option value="Tarjeta Débito/Crédito">
+                  Tarjeta Débito/Crédito
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="manual-status">Estado del Pago:</label>
+              <select id="manual-status" class="form-input" required>
+                <option value="Completado / Pagado">
+                  Completado & Pagado (Sumar a Contabilidad)
+                </option>
+                <option value="Pendiente">Pendiente de Cobro</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-gold btn-block btn-lg mt-3">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar Venta en
+            Contabilidad
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Archivo JavaScript Exclusivo del Administrador -->
+    <script src="admin.js"></script>
+  </body>
+</html>
